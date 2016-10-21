@@ -26,7 +26,9 @@ function! s:FZFCdnJsHandler(str)
   call append(line('.'), library.latest)
 endfunction
 
-command! FZFCdnJs cal fzf#run({
-      \ 'source':  s:get_apis(),
-      \ 'sink':   function('<sid>FZFCdnJsHandler'),
-      \ })
+function! fzfcdnjs#init()
+  cal fzf#run({
+        \ 'source':  s:get_apis(),
+        \ 'sink':   function('<sid>FZFCdnJsHandler'),
+        \ })
+endfunction
