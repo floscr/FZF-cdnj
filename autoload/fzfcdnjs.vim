@@ -10,9 +10,22 @@ function! s:get_apis()
   return map(copy(s:list), 'printf("%s (v%s)", v:val.name, v:val.version)')
 endfunc
 
+function! s:get_ext(url)
+  return fnamemodify(a:url, ':e')
+endfunction
+
 function! s:insert(str)
   let library = filter(copy(s:list), 'v:val.name == split(a:str)[0]')[0]
-  call append(line('.'), library.latest)
+  let ext = s:get_ext(library.latest)
+  let url = library.latest
+
+  if ext ==? 'js'
+    let tag = '<script src="' . url . '"></script>'
+  elseif ext ==? 'css'
+    let tag = '<link rel="stylesheet" href="' . url . '">'
+  endif
+
+  call append(line('.'), tag)
 endfunction
 
 function! fzfcdnjs#init()
